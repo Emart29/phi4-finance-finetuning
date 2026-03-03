@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FinSight AI — Financial Intelligence Terminal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{colors:{navy:{950:'#020812',900:'#040f1f',800:'#071628',700:'#0a1e35',600:'#0d2645',500:'#113060'},gold:{300:'#f5d680',400:'#f0c040',500:'#e6a817',600:'#c98f0f',700:'#a87209'},steel:{400:'#8899aa',500:'#6b7f93',600:'#4a5f72'}},fontFamily:{display:['Playfair Display','serif'],sans:['DM Sans','sans-serif'],mono:['DM Mono','monospace']},animation:{'fade-up':'fadeUp 0.6s ease forwards','pulse-gold':'pulseGold 2s ease-in-out infinite','shimmer':'shimmer 1.8s linear infinite'},keyframes:{fadeUp:{'0%':{opacity:0,transform:'translateY(16px)'},'100%':{opacity:1,transform:'translateY(0)'}},pulseGold:{'0%,100%':{boxShadow:'0 0 0 0 rgba(230,168,23,0)'},'50%':{boxShadow:'0 0 20px 4px rgba(230,168,23,0.15)'}},shimmer:{'0%':{backgroundPosition:'-200% 0'},'100%':{backgroundPosition:'200% 0'}}}}}}
+</script>
+<style>
+body{background-color:#020812}
+.grid-bg{background-image:linear-gradient(rgba(17,48,96,0.25) 1px,transparent 1px),linear-gradient(90deg,rgba(17,48,96,0.25) 1px,transparent 1px);background-size:40px 40px}
+.gold-text{background:linear-gradient(135deg,#f5d680 0%,#e6a817 50%,#f0c040 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.glow-focus:focus{outline:none;box-shadow:0 0 0 1px #e6a817,0 0 20px rgba(230,168,23,0.2)}
+.terminal-card{background:linear-gradient(135deg,#040f1f 0%,#071628 100%);border:1px solid rgba(230,168,23,0.15)}
+.skeleton{background:linear-gradient(90deg,#071628 25%,#0a1e35 50%,#071628 75%);background-size:200% 100%;animation:shimmer 1.8s linear infinite;border-radius:4px}
+.stat-pill{background:rgba(230,168,23,0.08);border:1px solid rgba(230,168,23,0.2)}
+.btn-gold{background:linear-gradient(135deg,#e6a817,#c98f0f);transition:all 0.2s ease}
+.btn-gold:hover{background:linear-gradient(135deg,#f0c040,#e6a817);box-shadow:0 0 24px rgba(230,168,23,0.35);transform:translateY(-1px)}
+.btn-gold:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+.chip{background:rgba(7,22,40,0.8);border:1px solid rgba(230,168,23,0.2);transition:all 0.2s ease}
+.chip:hover{background:rgba(230,168,23,0.1);border-color:rgba(230,168,23,0.5);color:#f5d680}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-inner{animation:ticker 30s linear infinite;white-space:nowrap}
+@keyframes cursor{0%,100%{opacity:1}50%{opacity:0}}
+.typewriter::after{content:'|';animation:cursor 1s step-end infinite;color:#e6a817}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#040f1f}
+::-webkit-scrollbar-thumb{background:#e6a817;border-radius:3px}
+</style>
+</head>
+<body class="grid-bg min-h-screen font-sans text-slate-200">
+
+<!-- TICKER -->
+<div class="bg-navy-900 border-b border-yellow-600/20 overflow-hidden py-1.5">
+  <div class="ticker-inner inline-flex gap-8 text-xs font-mono px-4">
+    <span class="text-yellow-400">SPX <span class="text-emerald-400">5,248</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">MSFT <span class="text-emerald-400">415.32</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">AAPL <span class="text-red-400">178.20</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">NVDA <span class="text-emerald-400">875.40</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">GOOGL <span class="text-emerald-400">175.98</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">10Y <span class="text-red-400">4.32%</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">SPX <span class="text-emerald-400">5,248</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">MSFT <span class="text-emerald-400">415.32</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">AAPL <span class="text-red-400">178.20</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">NVDA <span class="text-emerald-400">875.40</span></span>
+    <span class="text-slate-500">·</span>
+    <span class="text-yellow-400">10Y <span class="text-red-400">4.32%</span></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="border-b border-yellow-600/20 bg-[#020812]/80 backdrop-blur-sm sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded border border-yellow-500/40 flex items-center justify-center animate-pulse-gold">
+        <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="font-display text-lg font-bold gold-text tracking-wide">FinSight AI</h1>
+        <p class="text-xs text-slate-500 font-mono -mt-0.5">Financial Intelligence Terminal</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="hidden sm:flex items-center gap-1.5 stat-pill px-3 py-1 rounded-full">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-xs font-mono text-slate-400">Model Online</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-1.5 stat-pill px-3 py-1 rounded-full">
+        <span class="text-xs font-mono text-yellow-400">+69% ROUGE-L</span>
+      </div>
+      <a href="https://huggingface.co/Emar7/phi4-finance-finetuned" target="_blank"
+         class="text-xs font-mono text-slate-400 hover:text-yellow-400 transition-colors border border-slate-600/40 hover:border-yellow-500/40 px-3 py-1.5 rounded">
+        HF Hub ↗
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="max-w-6xl mx-auto px-6 pt-14 pb-8 animate-fade-up">
+  <div class="max-w-2xl">
+    <p class="text-xs font-mono text-yellow-500/70 tracking-[0.2em] uppercase mb-3">Fine-Tuned on SEC 10-K Filings</p>
+    <h2 class="font-display text-4xl sm:text-5xl font-bold text-white leading-tight mb-4">
+      Ask any<br/><span class="gold-text">financial question.</span>
+    </h2>
+    <p class="text-slate-400 text-base leading-relaxed max-w-xl">
+      Powered by Phi-4 Mini fine-tuned with QLoRA on 6,300 financial Q&amp;A pairs from SEC annual reports.
+      Delivers analyst-grade answers with <span class="text-yellow-400 font-medium">69% better accuracy</span> than the base model.
+    </p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="max-w-6xl mx-auto px-6 pb-20">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+    <!-- LEFT: Input -->
+    <div class="lg:col-span-2 flex flex-col gap-4">
+
+      <!-- Question card -->
+      <div class="terminal-card rounded-xl p-5">
+        <label class="block text-xs font-mono text-yellow-500/80 tracking-widest uppercase mb-3">Query Input</label>
+        <textarea id="questionInput" rows="4"
+          placeholder="e.g. What does declining gross margin say about pricing power?"
+          class="w-full bg-[#020812]/80 border border-slate-600/30 glow-focus rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 font-sans resize-none transition-all duration-200">
+        </textarea>
+        <div class="mt-3">
+          <label class="block text-xs font-mono text-slate-500 tracking-widest uppercase mb-2">Context — optional 10-K excerpt</label>
+          <textarea id="contextInput" rows="3"
+            placeholder="Paste a passage from an annual report..."
+            class="w-full bg-[#020812]/80 border border-slate-600/20 glow-focus rounded-lg px-4 py-3 text-xs text-slate-300 placeholder-slate-600 font-mono resize-none transition-all duration-200">
+          </textarea>
+        </div>
+        <button id="submitBtn" onclick="submitQuestion()"
+          class="btn-gold w-full mt-4 py-3 rounded-lg text-[#020812] font-semibold text-sm tracking-wide flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          <span id="btnText">Analyze</span>
+        </button>
+      </div>
+
+      <!-- Presets -->
+      <div class="terminal-card rounded-xl p-5">
+        <p class="text-xs font-mono text-slate-500 tracking-widest uppercase mb-3">Quick Questions</p>
+        <div class="flex flex-col gap-2" id="presetChips"></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="terminal-card rounded-xl p-5">
+        <p class="text-xs font-mono text-slate-500 tracking-widest uppercase mb-4">Model Performance</p>
+        <div class="space-y-3" id="metricsContainer"></div>
+        <p class="text-xs text-slate-600 font-mono mt-4">Evaluated on 100 held-out 10-K Q&amp;A pairs</p>
+      </div>
+    </div>
+
+    <!-- RIGHT: Output -->
+    <div class="lg:col-span-3">
+      <div class="terminal-card rounded-xl h-full min-h-[520px] flex flex-col">
+
+        <!-- Panel header -->
+        <div class="flex items-center justify-between px-5 py-4 border-b border-yellow-500/10">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+            <span class="text-xs font-mono text-yellow-500/80 tracking-widest uppercase">Analysis Output</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono text-slate-500 stat-pill px-2 py-0.5 rounded">Phi-4 Mini · Fine-Tuned</span>
+            <button onclick="copyAnswer()" id="copyBtn"
+              class="text-xs font-mono text-slate-500 hover:text-yellow-400 transition-colors px-2 py-0.5 rounded border border-slate-600/30 hover:border-yellow-500/30">
+              copy
+            </button>
+          </div>
+        </div>
+
+        <!-- Answer area -->
+        <div class="flex-1 p-5 overflow-y-auto" id="answerArea">
+
+          <!-- Empty -->
+          <div id="emptyState" class="h-full flex flex-col items-center justify-center text-center py-16">
+            <div class="w-16 h-16 rounded-full border border-yellow-500/20 flex items-center justify-center mb-4 animate-pulse-gold">
+              <svg class="w-7 h-7 text-yellow-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <p class="text-slate-500 font-mono text-sm">Awaiting query...</p>
+            <p class="text-slate-600 font-mono text-xs mt-1">Enter a financial question to begin analysis</p>
+          </div>
+
+          <!-- Loading -->
+          <div id="loadingState" class="hidden space-y-3 py-4">
+            <div class="skeleton h-4 w-3/4"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-5/6"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-2/3"></div>
+            <p class="text-xs font-mono text-yellow-500/60 mt-4 typewriter">Analyzing</p>
+          </div>
+
+          <!-- Answer -->
+          <div id="answerState" class="hidden">
+            <div class="mb-4">
+              <p class="text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">Question</p>
+              <p id="displayQuestion" class="text-sm text-slate-300 leading-relaxed"></p>
+            </div>
+            <div class="border-t border-yellow-500/10 pt-4">
+              <p class="text-xs font-mono text-yellow-500/80 uppercase tracking-widest mb-3">Analysis</p>
+              <div id="displayAnswer" class="text-sm text-slate-200 leading-relaxed whitespace-pre-wrap"></div>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div id="errorState" class="hidden py-8 text-center">
+            <p class="text-red-400 font-mono text-sm mb-2">Connection Error</p>
+            <p class="text-slate-500 font-mono text-xs" id="errorMsg"></p>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="border-t border-yellow-500/10 px-5 py-3">
+          <p class="text-xs font-mono text-slate-600 uppercase tracking-widest mb-2">Recent</p>
+          <div id="historyStrip" class="flex gap-2 overflow-x-auto pb-1">
+            <p class="text-xs text-slate-600 font-mono italic">No queries yet</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-yellow-600/10 bg-[#020812]/60">
+  <div class="max-w-6xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <p class="text-xs font-mono text-slate-600">Built by <span class="text-yellow-500/80">Emmanuel Nwanguma</span> · Phi-4 Mini fine-tuned with QLoRA</p>
+    <div class="flex items-center gap-4">
+      <a href="https://huggingface.co/Emar7/phi4-finance-finetuned" target="_blank" class="text-xs font-mono text-slate-500 hover:text-yellow-400 transition-colors">Model ↗</a>
+      <a href="https://www.kaggle.com/code/nwangumaemmanuel/phi4-finance-finetuning" target="_blank" class="text-xs font-mono text-slate-500 hover:text-yellow-400 transition-colors">Notebook ↗</a>
+      <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-yellow-400 transition-colors">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Preset questions
+const presets = [
+  "What does a high debt-to-equity ratio indicate?",
+  "How do rising interest rates affect corporate earnings?",
+  "What is free cash flow and why does it matter?",
+  "How do you identify margin compression in a 10-K?",
+  "What risks should investors look for in annual filings?",
+];
+const chipsContainer = document.getElementById('presetChips');
+presets.forEach(q => {
+  const btn = document.createElement('button');
+  btn.className = 'chip text-left px-3 py-2 rounded-lg text-xs text-slate-400 font-sans w-full cursor-pointer';
+  btn.textContent = q;
+  btn.onclick = () => { document.getElementById('questionInput').value = q; submitQuestion(); };
+  chipsContainer.appendChild(btn);
+});
+
+// Metric bars
+const metrics = [
+  { label:'ROUGE-1', base:46.6, ft:75.2, pct:61.6 },
+  { label:'ROUGE-2', base:35.6, ft:61.1, pct:71.5 },
+  { label:'ROUGE-L', base:42.4, ft:71.7, pct:69.0 },
+];
+const mc = document.getElementById('metricsContainer');
+metrics.forEach(m => {
+  mc.innerHTML += `
+    <div>
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-xs font-mono text-slate-400">${m.label}</span>
+        <span class="text-xs font-mono text-yellow-400 font-medium">+${m.pct}%</span>
+      </div>
+      <div class="relative h-1.5 bg-[#020812] rounded-full overflow-hidden">
+        <div class="absolute left-0 top-0 h-full rounded-full bg-slate-600/40" style="width:${m.base}%"></div>
+        <div class="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400 transition-all duration-1000" style="width:0%" data-target="${m.ft}%"></div>
+      </div>
+      <div class="flex justify-between mt-0.5">
+        <span class="text-[10px] font-mono text-slate-600">Base ${m.base}</span>
+        <span class="text-[10px] font-mono text-yellow-500/70">FT ${m.ft}</span>
+      </div>
+    </div>`;
+});
+setTimeout(() => {
+  document.querySelectorAll('[data-target]').forEach(b => b.style.width = b.dataset.target);
+}, 600);
+
+// State helpers
+const history = [];
+function showState(s) {
+  ['emptyState','loadingState','answerState','errorState'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById(s).classList.remove('hidden');
+}
+
+// Submit
+async function submitQuestion() {
+  const question = document.getElementById('questionInput').value.trim();
+  const context  = document.getElementById('contextInput').value.trim();
+  if (!question) { document.getElementById('questionInput').focus(); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('btnText').textContent = 'Analyzing...';
+  showState('loadingState');
+
+  try {
+    const res = await fetch('/predict', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, context }),
+    });
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+    const data = await res.json();
+    document.getElementById('displayQuestion').textContent = data.question;
+    document.getElementById('displayAnswer').textContent   = data.answer;
+    showState('answerState');
+    addToHistory(question);
+  } catch (err) {
+    document.getElementById('errorMsg').textContent = err.message;
+    showState('errorState');
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btnText').textContent = 'Analyze';
+  }
+}
+
+// History
+function addToHistory(q) {
+  history.unshift(q);
+  if (history.length > 5) history.pop();
+  const strip = document.getElementById('historyStrip');
+  strip.innerHTML = '';
+  history.forEach(q => {
+    const chip = document.createElement('button');
+    chip.className = 'chip shrink-0 px-3 py-1.5 rounded text-xs font-mono text-slate-400 max-w-[180px] truncate';
+    chip.title = q; chip.textContent = q.length > 30 ? q.slice(0,30)+'…' : q;
+    chip.onclick = () => { document.getElementById('questionInput').value = q; submitQuestion(); };
+    strip.appendChild(chip);
+  });
+}
+
+// Copy
+function copyAnswer() {
+  const answer = document.getElementById('displayAnswer').textContent;
+  if (!answer) return;
+  navigator.clipboard.writeText(answer).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'copied!'; btn.classList.add('text-yellow-400');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('text-yellow-400'); }, 1500);
+  });
+}
+
+// Ctrl+Enter to submit
+document.getElementById('questionInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submitQuestion();
+});
+</script>
+</body>
+</html>
