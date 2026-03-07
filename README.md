@@ -6,7 +6,7 @@
 
 [![Model](https://img.shields.io/badge/🤗_Model-Emar7/phi4--finance--finetuned-blue)](https://huggingface.co/Emar7/phi4-finance-finetuned)
 [![Demo](https://img.shields.io/badge/🌐_Live_Demo-HuggingFace_Spaces-brightgreen)](https://emar7-phi4-finance-demo.hf.space)
-[![Notebook](https://img.shields.io/badge/📓_Notebook-Kaggle-orange)](https://www.kaggle.com)
+[![Notebook](https://img.shields.io/badge/📓_Notebook-Kaggle-orange)](https://www.kaggle.com/code/nwangumaemmanuel/phi4-finance-finetuning)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -145,7 +145,7 @@ The notebook covers:
 |----------|------|
 | 🤗 Fine-tuned Model | [Emar7/phi4-finance-finetuned](https://huggingface.co/Emar7/phi4-finance-finetuned) |
 | 🌐 Live Demo | [HuggingFace Spaces](https://emar7-phi4-finance-demo.hf.space) |
-| 📓 Training Notebook | [Kaggle](https://www.kaggle.com) |
+| 📓 Training Notebook | [Kaggle](https://www.kaggle.com/code/nwangumaemmanuel/phi4-finance-finetuning) |
 | 📦 Base Model | [microsoft/Phi-4-mini-instruct](https://huggingface.co/microsoft/Phi-4-mini-instruct) |
 | 📊 Dataset | [virattt/financial-qa-10K](https://huggingface.co/datasets/virattt/financial-qa-10K) |
 
